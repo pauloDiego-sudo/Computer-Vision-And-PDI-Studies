@@ -34,10 +34,11 @@ while video.isOpened():
     img = cv2.resize(img,(640,480))
     imgRGB = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
     results = faceMesh.process(imgRGB) #Processando a imagem 
+    face_points = results.multi_face_landmarks #Pegando os pontos do rosto
     h,w,_ = img.shape
     
-    if results:
-        for face in results.multi_face_landmarks: #Buscando as coordenadas de faces na imagem
+    if results and face_points:
+        for face in face_points: #Buscando as coordenadas de faces na imagem
           #  mp_drawing.draw_landmarks(img,face,mpFaceMesh.FACEMESH_FACE_OVAL)
             #Vamos usar os pontos 159 com o 145 para o olho direito, 386 com 374 para o olho esquerdo
             olhoDireitoPontoSuperiorX , olhoDireitoPontoSuperiorY = int(face.landmark[159].x*w) , int(face.landmark[159].y*h) #transformando em pixels
@@ -46,15 +47,15 @@ while video.isOpened():
             olhoEsquerdoPontoSuperiorX , olhoEsquerdoPontoSuperiorY = int(face.landmark[386].x*w) , int(face.landmark[386].y*h) #transformando em pixels
             olhoEsquerdoPontoInferiorX , olhoEsquerdoPontoInferiorY = int(face.landmark[374].x*w) , int(face.landmark[374].y*h) #transformando em pixels
 
-            cv2.circle(img,(olhoDireitoPontoSuperiorX,olhoDireitoPontoSuperiorY),1,(255,0,0),2)
-            cv2.circle(img,(olhoDireitoPontoInferiorX,olhoDireitoPontoInferiorY),1,(255,0,0),2)
-            cv2.circle(img,(olhoEsquerdoPontoSuperiorX,olhoEsquerdoPontoSuperiorY),1,(255,0,0),2)
-            cv2.circle(img,(olhoEsquerdoPontoInferiorX,olhoEsquerdoPontoInferiorY),1,(255,0,0),2)
+            # cv2.circle(img,(olhoDireitoPontoSuperiorX,olhoDireitoPontoSuperiorY),1,(255,0,0),2)
+            # cv2.circle(img,(olhoDireitoPontoInferiorX,olhoDireitoPontoInferiorY),1,(255,0,0),2)
+            # cv2.circle(img,(olhoEsquerdoPontoSuperiorX,olhoEsquerdoPontoSuperiorY),1,(255,0,0),2)
+            # cv2.circle(img,(olhoEsquerdoPontoInferiorX,olhoEsquerdoPontoInferiorY),1,(255,0,0),2)
 
             #Calculando a distancia entre os dois pontos de cada olho
             distDireito = math.hypot(olhoDireitoPontoSuperiorX-olhoDireitoPontoInferiorX,olhoDireitoPontoSuperiorY-olhoDireitoPontoInferiorY)
             distEsquerdo = math.hypot(olhoEsquerdoPontoSuperiorX-olhoEsquerdoPontoInferiorX,olhoEsquerdoPontoSuperiorY-olhoEsquerdoPontoInferiorY)
-
+            
             #Esse valor é fixo para a distancia da camera, portanto deve ser mudado
             if distDireito <= 9 and distEsquerdo <= 9:
                 # print('olhos fechados')
