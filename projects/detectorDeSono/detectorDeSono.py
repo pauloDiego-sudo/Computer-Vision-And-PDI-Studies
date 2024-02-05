@@ -8,6 +8,7 @@ import pygame
 import threading
 
 dataPath = 'C:/Users/Lenovo/Documents/LAPISCO/ComputerVisionStudies/Computer-Vision-And-PDI-Studies/projects/detectorDeSono/data/'
+dataPathLinux = '/home/pdiego/Documentos/Computer-Vision-And-PDI-Studies/projects/detectorDeSono/data/'
 
 video = cv2.VideoCapture(0,cv2.CAP_DSHOW)
 mpFaceMesh = mp.solutions.face_mesh #carreganndo a solução face mesh
@@ -16,7 +17,7 @@ mp_drawing = mp.solutions.drawing_utils
 inicio = 0
 status = "" #Serve para verificar a mudança de status
 pygame.mixer.init()
-pygame.mixer.music.load(f"{dataPath}e-o-pix-nada-ainda.mp3")
+pygame.mixer.music.load(f"{dataPathLinux}e-o-pix-nada-ainda.mp3")
 
 # Function to play the audio
 def play_audio():
